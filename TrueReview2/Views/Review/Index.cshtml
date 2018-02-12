@@ -1,0 +1,27 @@
+﻿@{
+
+
+
+}
+<p><a asp-controller="Review" asp-action="Remove">Delete Reviews</a></p>
+<table class="table">
+
+    <tr>
+        <th>Title</th>
+        <th>Book Review</th>
+        <th>Genre</th>
+        <th>Rating Number</th>
+
+    </tr>
+
+    @foreach (var review in ViewBag.reviews)
+    {
+        <tr>
+            <td>@review.Title</td>
+            <td>@review.BookReview</td>
+            <td>@review.GenreName</td>
+            <td>@review.RatingNumber</td>
+
+        </tr>
+    }
+</table>
