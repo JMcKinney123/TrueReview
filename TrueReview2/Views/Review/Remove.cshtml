@@ -1,0 +1,15 @@
+﻿
+
+<h1>@ViewBag.title</h1>
+
+<form method="post">
+
+    @foreach (var review in ViewBag.reviews)
+    {
+        <input type="checkbox" name="reviewIds" id="@review.ID" value="@review.ID" />
+        <label for="@review.ID">@review.Title</label>
+        <br />
+    }
+
+    <input type="submit" value="Remove Selected Review(s)" />
+</form>

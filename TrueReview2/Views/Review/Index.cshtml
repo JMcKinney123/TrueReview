@@ -1,8 +1,6 @@
-﻿@{
+﻿
 
 
-
-}
 <p><a asp-controller="Review" asp-action="Remove">Delete Reviews</a></p>
 <table class="table">
 
@@ -14,7 +12,7 @@
 
     </tr>
 
-    @foreach (var review in ViewBag.reviews)
+    @foreach (var review in Model)
     {
         <tr>
             <td>@review.Title</td>
@@ -25,3 +23,5 @@
         </tr>
     }
 </table>
+
+<h3>@String.Format("You have {0} Review(s)", Model.Count)</h3>

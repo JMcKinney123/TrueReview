@@ -12,7 +12,7 @@ namespace TrueReview2.Models
         public int ID { get; set; }
         public string GenreName { get; set; }
 
-        
+       
         public int GenreId { get; set; }
         public enum Genres
         {
@@ -28,5 +28,6 @@ namespace TrueReview2.Models
             Fantasy,
             Drama
         }
+        public IList<Genres> GenreNames = new List<Genres>();
     }
 }

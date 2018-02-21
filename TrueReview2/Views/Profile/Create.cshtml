@@ -1,0 +1,23 @@
+﻿@model TrueReview2.ViewModels.UserProfileViewModel 
+
+<p><a asp-controller="Profile" asp-action="Remove">Delete Profile</a></p>
+@if (User.Identity.IsAuthenticated)
+{
+<form asp-controller="Profile" asp-action="Create" method="post">
+
+    <div class="form-group">
+        <label asp-for="Title" name="Title"></label>
+        <input class="form-control" asp-for="Title" />
+        <span asp-validation-for="Title"></span>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="AboutMe"></label>
+        <textarea class="form-control" asp-for="AboutMe"></textarea>
+        <span asp-validation-for="AboutMe"></span>
+    </div>
+
+    <input type="submit" value="Create Profile" />
+
+</form>
+}

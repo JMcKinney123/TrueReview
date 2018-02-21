@@ -1,0 +1,24 @@
+﻿
+
+<table class="table">
+
+    <tr>
+        <th>Title</th>
+        <th>About Me</th>
+        
+
+    </tr>
+
+    @foreach (var profile in Model)
+    {
+        <tr>
+            <td>@profile.Title</td>
+            <td>@profile.AboutMe</td>
+           
+        </tr>
+    }
+</table>
+
+
+
+<p><a asp-controller="Profile" asp-action="Remove">Delete Profile</a></p>
