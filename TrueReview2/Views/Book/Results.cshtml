@@ -1,0 +1,27 @@
+﻿
+
+
+
+<table class="table">
+
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Genre</th>
+
+    </tr>
+
+    @foreach (var book in Model)
+    {
+        <tr>
+            <td>@book.Title</td>
+            <td>@book.Author</td>
+            <td>@book.ISBN</td>
+            <td>@book.GenreName</td>
+
+        </tr>
+    }
+</table>
+
+<p><a asp-controller="Book" asp-action="Remove">Delete Book(s)</a></p>

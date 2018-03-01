@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using TrueReview2.Models;
 using Microsoft.AspNetCore.Identity;
 using TrueReview2.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrueReview2.Controllers
 {
@@ -21,21 +22,22 @@ namespace TrueReview2.Controllers
             this.context = dbContext;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var userid = _userManager.GetUserId(HttpContext.User);
-            return View();
+            var books = from m in context.Books
+                         select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                books = books.Where(s => s.Title.Contains(searchString));
+            }
+
+            return View(await books.ToListAsync());
+
         }
 
-        public async Task<ActionResult> About()
+        public IActionResult About()
         {
-            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
-
-            if (currentUser != null)
-            {
-                ViewData["Message"] = "Welcome " + currentUser.UserName;
-            }
-            else
             {
                 ViewData["Message"] = "Welcome, Guest User";
             }

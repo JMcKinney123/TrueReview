@@ -19,7 +19,7 @@ namespace TrueReview2.Models
 
         public string UserName { get; set; }
         public int RatingId { get; set; }
-        public int RatingNumber { get; set; }
+        public double RatingNumber { get; set; }
 
         public int GenreId { get; set; }
         public Genre.Genres GenreName { get; set; }

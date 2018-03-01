@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using TrueReview2.Models;
 using TrueReview2.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrueReview2.Controllers
 {
@@ -20,13 +21,48 @@ namespace TrueReview2.Controllers
         {
             this.context = dbContext;
             _userManager = userManager;
-            
+
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        {
+            ViewData["TitleSortParm"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewData["AuthorSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Author" : "";
+            ViewData["CurrentFilter"] = searchString;
+
+            var books = from s in context.Books
+                           select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                books = books.Where(s => s.Title.ToUpper().Contains(searchString.ToUpper())
+                                       || s.Author.ToUpper().Contains(searchString.ToUpper()));
+            }
+
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    books = books.OrderByDescending(s => s.Title);
+                    break;
+                case "Author":
+                    books = books.OrderBy(s => s.Author);
+                    break;
+                
+                default:
+                    books = books.OrderBy(s => s.Title);
+                    break;
+            }
+            return View(await books.AsNoTracking().ToListAsync());
+        }
+
+
+
+
+
+       /* public IActionResult Index()
         {
             List<Book> Books = context.Books.ToList();
             return View(Books);
-        }
+        } */
 
         public IActionResult Add()
         {
@@ -45,18 +81,29 @@ namespace TrueReview2.Controllers
                     Author = bookViewModel.Author,
                     ISBN = bookViewModel.ISBN,
                     GenreName = bookViewModel.GenreName,
-
+                    RatingNumber = bookViewModel.RatingNumber,
 
                 };
 
+                var title = newBook.Title;
+                var author = newBook.Author;
 
-                context.Books.Add(newBook);
+                var numBook = context.Books.Where(x => x.Title == title && x.Author == author).ToList().Count;
 
-                context.SaveChanges();
+                if (numBook >= 1)
+                {
+                    return Redirect("/Book/Index");
+                }
+                else
+                {
+
+                    context.Books.Add(newBook);
+                    context.SaveChanges();
+                    return Redirect("/Book/Results/" + newBook.BookId);
+                }
 
 
-
-                return Redirect("/Book?=" + newBook.BookId);
+                
             }
             return View(bookViewModel);
         }
@@ -79,6 +126,17 @@ namespace TrueReview2.Controllers
             context.SaveChanges();
 
             return Redirect("/Book");
+        }
+        public IActionResult Results(int? id)
+        {
+          
+
+            var bookPage = context.Books.Where(p => p.BookId == id);
+
+
+            return View(bookPage);
+
+
         }
     }
 }

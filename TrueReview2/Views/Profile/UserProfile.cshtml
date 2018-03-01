@@ -1,4 +1,21 @@
 ﻿
+<table class="table">
 
+    <tr>
+        <th>Title</th>
+        <th>AboutMe</th>
+
+
+    </tr>
+
+    @foreach (var profile in Model)
+    {
+        <tr>
+            <td>@profile.Title</td>
+            <td>@profile.AboutMe</td>
+
+        </tr>
+    }
+</table>
 
 

@@ -9,13 +9,28 @@ namespace TrueReview2.Models
     public class Rating
     {
         
-        public int RatingNumber { get; set; }
+        public double RatingNumber { get; set; }
         public int RatingId { get; set; }
 
         public int ReviewId { get; set; }
 
-        
-       
+        public Rating() { }
+
+        public static double TrueRating(double[] RatingNumber)
+        {
+            double sum = 0;
+
+            for (int i = 0; i < RatingNumber.Length; i++)
+            {
+                sum += RatingNumber[i];
+            }
+
+            double rating = sum / RatingNumber.Length;
+
+            return rating;
+        }
 
     }
+
+   
 }

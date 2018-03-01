@@ -34,20 +34,8 @@ namespace TrueReview2.Controllers
         
         public IActionResult Index()
         {
-            //var user = await _userManager.GetUserAsync(HttpContext.User);
-            //var email = user.Email;
-
-             //List<Profile> Profiles = context.Profiles.ToList();
-
-            var email = User.Identity.Name;
-            var userProfile = context.Profiles.Where(p => p.UserName == email); //.FirstOrDefault();
-
-            //var userProfile = context.Profiles.Single(p => p.ApplicationUser.Email == email);
-
-
-
-            return View(userProfile);
-
+            List<Profile> Profiles = context.Profiles.ToList();
+            return View(Profiles);
         }
         
         public IActionResult Create()
@@ -102,6 +90,29 @@ namespace TrueReview2.Controllers
             return Redirect("/Profile/");
         }
 
+        public IActionResult userProfile()
+        {
+            //var user = await _userManager.GetUserAsync(HttpContext.User);
+            //var email = user.Email;
+            
+            
+            var email = User.Identity.Name;
+            var userProfile = context.Profiles.Where(p => p.UserName == email); //.FirstOrDefault();
+
+
+            var numProfiles = context.Profiles.Where(p => p.UserName == email).ToList().Count;
+
+            if (numProfiles == 1)
+            {
+                return View(userProfile);
+            }
+            else
+            {
+                return Redirect("/Profile/Create");
+            }
+            
+            
+        }
         
        
     }

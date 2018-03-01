@@ -27,7 +27,7 @@ namespace TrueReview2.ViewModels
         [Display(Name = "Genre")]
         public Genre.Genres GenreName { get; set; }
 
-       
+        public double RatingNumber { get; set; }
 
         public List<SelectListItem> GenreNames { get; set; }
 
