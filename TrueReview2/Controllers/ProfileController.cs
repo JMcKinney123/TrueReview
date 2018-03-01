@@ -29,7 +29,7 @@ namespace TrueReview2.Controllers
             _userManager = userManager;
             this.context = dbContext;
            
-
+            
     }
         
         public IActionResult Index()
