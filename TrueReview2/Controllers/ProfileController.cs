@@ -70,7 +70,7 @@ namespace TrueReview2.Controllers
 
                 };
 
-
+                
                 context.Profiles.Add(newProfile);
 
                 context.SaveChanges();
