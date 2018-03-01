@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using TrueReview2.Models;
 using TrueReview2.ViewModels;
 using TrueReview2.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrueReview2.Controllers
 {
@@ -34,7 +35,7 @@ namespace TrueReview2.Controllers
         }
 
         [HttpPost]
-
+        [Authorize]
         public IActionResult Add(AddReviewViewModel addReviewViewModel)
         {
             if (ModelState.IsValid)
@@ -45,6 +46,7 @@ namespace TrueReview2.Controllers
                     BookReview = addReviewViewModel.BookReview,
                     GenreName = addReviewViewModel.GenreName,
                     RatingNumber = addReviewViewModel.RatingNumber,
+                    UserName = User.Identity.Name,
 
                 };
 
@@ -57,13 +59,14 @@ namespace TrueReview2.Controllers
             }
             return View(addReviewViewModel);
         }
+
         public IActionResult Remove()
         {
             ViewBag.title = "Remove Review(s)";
             ViewBag.reviews = context.Reviews.ToList();
             return View();
         }
-
+        [Authorize]
         [HttpPost]
         public IActionResult Remove(int[] reviewIds)
         {

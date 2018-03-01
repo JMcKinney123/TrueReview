@@ -10,25 +10,27 @@ namespace TrueReview2.Models
 {
     public class Review
     {
-
-
         public int ID { get; set; }
+
+        public int ReviewId { get; set; }
+        
         public string BookReview { get; set; }
         public string Title { get; set; }
-        
 
+        public string UserName { get; set; }
         public int RatingId { get; set; }
         public int RatingNumber { get; set; }
 
         public int GenreId { get; set; }
         public Genre.Genres GenreName { get; set; }
 
-        [ForeignKey("ReviewAuthorID")]
-        public ApplicationUser ReviewAuthor { get; set; }
+        public ICollection<Genre> GenreNames { get; set; }
 
-        public virtual ICollection<Review> Reviews { get; set; }
+        public ICollection<Rating> RatingNumbers { get; set; }
 
-      
         
+
+
+
     }
 }

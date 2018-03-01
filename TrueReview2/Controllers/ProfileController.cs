@@ -6,6 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using TrueReview2.Models;
 using TrueReview2.Data;
 using TrueReview2.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,49 +20,64 @@ namespace TrueReview2.Controllers
     public class ProfileController : Controller
     {
         private ApplicationDbContext context;
-       
+        private UserManager<ApplicationUser> _userManager;
+        
         // GET: /<controller>/
 
-        public ProfileController(ApplicationDbContext dbContext)
+        public ProfileController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             this.context = dbContext;
-        }
+           
 
+    }
+        
         public IActionResult Index()
         {
-            List<Profile> Profiles = context.Profiles.ToList();
+            //var user = await _userManager.GetUserAsync(HttpContext.User);
+            //var email = user.Email;
 
-            return View(Profiles);
- 
+             //List<Profile> Profiles = context.Profiles.ToList();
+
+            var email = User.Identity.Name;
+            var userProfile = context.Profiles.Where(p => p.UserName == email); //.FirstOrDefault();
+
+            //var userProfile = context.Profiles.Single(p => p.ApplicationUser.Email == email);
+
+
+
+            return View(userProfile);
+
         }
 
         public IActionResult Create()
         {
-            UserProfileViewModel userProfileViewModel = new UserProfileViewModel();
+            ProfileViewModel userProfileViewModel = new ProfileViewModel();
             return View(userProfileViewModel);
         }
-
+        [Authorize]
         [HttpPost]
-        public IActionResult Create(UserProfileViewModel userProfileViewModel)
+        public IActionResult Create(ProfileViewModel userProfileViewModel)
         {
             if (ModelState.IsValid)
             {
                 Profile newProfile = new Profile
                 {
                     Title = userProfileViewModel.Title,
-                    UserName = userProfileViewModel.UserName,
+                    UserName = User.Identity.Name,
                     AboutMe = userProfileViewModel.AboutMe,
                     
 
                 };
 
-                
-                    context.Profiles.Add(newProfile);
 
-                    context.SaveChanges();
-                
+                context.Profiles.Add(newProfile);
 
-                return Redirect(String.Format("/Profile?={0}", newProfile.ID));
+                context.SaveChanges();
+
+
+
+                return Redirect("/Profile?=" + newProfile.ProfileId);
             }
             return View(userProfileViewModel);
         }
@@ -72,7 +93,7 @@ namespace TrueReview2.Controllers
         {
             foreach (int profileId in profileIds)
             {
-                Profile theProfile = context.Profiles.Single(c => c.ID == profileId);
+                Profile theProfile = context.Profiles.Single(c => c.ProfileId == profileId);
                 context.Profiles.Remove(theProfile);
             }
 
@@ -80,7 +101,8 @@ namespace TrueReview2.Controllers
 
             return Redirect("/Profile/");
         }
+
+        
        
-   
     }
 }

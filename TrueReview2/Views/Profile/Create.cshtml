@@ -1,8 +1,7 @@
-﻿@model TrueReview2.ViewModels.UserProfileViewModel 
+﻿@model TrueReview2.ViewModels.ProfileViewModel 
 
 <p><a asp-controller="Profile" asp-action="Remove">Delete Profile</a></p>
-@if (User.Identity.IsAuthenticated)
-{
+
 <form asp-controller="Profile" asp-action="Create" method="post">
 
     <div class="form-group">
@@ -20,4 +19,3 @@
     <input type="submit" value="Create Profile" />
 
 </form>
-}

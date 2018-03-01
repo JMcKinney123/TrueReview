@@ -28,6 +28,8 @@ namespace TrueReview2.Models
             Fantasy,
             Drama
         }
-        public IList<Genres> GenreNames = new List<Genres>();
+        
+
+        public ICollection<Genres> GenreNames = new List<Genres>();
     }
 }

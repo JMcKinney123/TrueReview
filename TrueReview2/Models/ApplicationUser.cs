@@ -6,24 +6,31 @@ using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
+
 namespace TrueReview2.Models
 {
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-
-       
+        public int ApplicationUserId { get; set; }
         
         public string AboutMe { get; set; }
         public string Title { get; set; }
 
+        public Profile Profile { get; set; }
         public string ReviewAuthor { get; set; }
-        [Key]
-        public int ApplicationUserID { get; set; }
-        public Review BookReview { get; set; }
 
-        public ICollection<ApplicationUser> ApplicationUsers = new List<ApplicationUser>();
-        public ICollection<Review> Reviews = new List<Review>();
+        public int ReviewId { get; set; }
+
+        public int GenreId { get; set; }
+        public Genre.Genres GenreName { get; set; }
+
+        public ICollection<Genre> GenreNames { get; set; }
+        
+        public ICollection<Review> Reviews { get; set; }
+       
+      
+        
         
     }
 }

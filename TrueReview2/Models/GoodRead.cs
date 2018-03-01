@@ -7,7 +7,7 @@ namespace TrueReview2.Models
 {
     public class GoodRead
     {
-        public int ID { get; set; }
+        public int GoodReadId { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
         public int ISBN { get; set; }

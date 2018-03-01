@@ -11,6 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using TrueReview2.Data;
 using TrueReview2.Models;
 using TrueReview2.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TrueReview2
 {
@@ -42,8 +46,24 @@ namespace TrueReview2
             services.AddMvc();
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-
+            var skipHTTPS = Configuration.GetValue<bool>("LocalTest:skipHTTPS");
+            
+            services.Configure<MvcOptions>(options =>
+            {
+                if (Environment.IsDevelopment() && !skipHTTPS)
+                {
+                    options.Filters.Add(new RequireHttpsAttribute());
+                }
+            });
             services.AddMvc();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                                 .RequireAuthenticatedUser()
+                                 .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

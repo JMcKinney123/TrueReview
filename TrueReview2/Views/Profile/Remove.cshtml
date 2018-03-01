@@ -6,8 +6,8 @@
 
     @foreach (var profile in ViewBag.profiles)
     {
-        <input type="checkbox" name="profileIds" id="@profile.ID" value="@profile.ID" />
-        <label for="@profile.ID">@profile.Title</label>
+        <input type="checkbox" name="profileIds" id="@profile.ProfileId" value="@profile.ProfileId" />
+        <label for="@profile.ProfileId">@profile.Title</label>
         <br />
     }
 

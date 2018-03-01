@@ -8,10 +8,12 @@ namespace TrueReview2.Models
 {
     public class Book
     {
-        public int ID { get; set; }
+        public int BookId { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
-        public int ISBN { get; set; }
-        
+        public long ISBN { get; set; }
+
+        public Genre.Genres GenreName { get; set; }
+
     }
 }

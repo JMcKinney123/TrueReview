@@ -1,38 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+using TrueReview2.Models;
 using static TrueReview2.Models.Genre;
 
-namespace TrueReview2.Models.AccountViewModels
+namespace TrueReview2.ViewModels
 {
-    public class RegisterViewModel
+    public class BookViewModel
     {
         [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
+        [Display(Name = "Book Title")]
+        public string Title { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
+        [Display(Name = "Author")]
+        public string Author { get; set; }
 
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
+        
+        [Display(Name = "ISBN")]
+        public long ISBN { get; set; }
 
-        public int GenreId { get; set; }
 
-        [Required]
         [Display(Name = "Genre")]
         public Genre.Genres GenreName { get; set; }
+
+       
 
         public List<SelectListItem> GenreNames { get; set; }
 
 
-        public RegisterViewModel()
+        public BookViewModel()
         {
 
             GenreNames = new List<SelectListItem>
@@ -106,4 +106,5 @@ namespace TrueReview2.Models.AccountViewModels
             };
         }
     }
+
 }

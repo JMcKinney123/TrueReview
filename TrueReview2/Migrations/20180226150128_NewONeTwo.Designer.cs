@@ -12,9 +12,10 @@ using TrueReview2.Models;
 namespace TrueReview2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180226150128_NewONeTwo")]
+    partial class NewONeTwo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,9 +194,7 @@ namespace TrueReview2.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("ProfileId")
-                        .IsUnique()
-                        .HasFilter("[ProfileId] IS NOT NULL");
+                    b.HasIndex("ProfileId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -207,9 +206,7 @@ namespace TrueReview2.Migrations
 
                     b.Property<string>("Author");
 
-                    b.Property<int>("GenreName");
-
-                    b.Property<long>("ISBN");
+                    b.Property<int>("ISBN");
 
                     b.Property<string>("Title");
 
@@ -331,8 +328,6 @@ namespace TrueReview2.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<string>("UserName");
-
                     b.HasKey("ID");
 
                     b.HasIndex("ApplicationUserId");
@@ -390,8 +385,8 @@ namespace TrueReview2.Migrations
             modelBuilder.Entity("TrueReview2.Models.ApplicationUser", b =>
                 {
                     b.HasOne("TrueReview2.Models.Profile", "Profile")
-                        .WithOne("ApplicationUser")
-                        .HasForeignKey("TrueReview2.Models.ApplicationUser", "ProfileId");
+                        .WithMany()
+                        .HasForeignKey("ProfileId");
                 });
 
             modelBuilder.Entity("TrueReview2.Models.Genre", b =>

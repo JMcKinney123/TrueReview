@@ -1,0 +1,16 @@
+﻿
+
+<h1>@ViewBag.title</h1>
+
+<form method="post">
+
+    @foreach (var book in ViewBag.books)
+    {
+        <input type="checkbox" name="bookIds" id="@book.BookId" value="@book.BookId" />
+        <label for="@book.BookId">@book.Title</label>
+        <br />
+    }
+
+    <input type="submit" value="Remove Selected Books(s)" />
+</form>
+

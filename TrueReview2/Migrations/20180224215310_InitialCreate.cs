@@ -30,10 +30,12 @@ namespace TrueReview2.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AboutMe = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false),
-                    ApplicationUserID = table.Column<int>(type: "int", nullable: false),
+                    ApplicationUserId = table.Column<int>(type: "int", nullable: false),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    GenreId = table.Column<int>(type: "int", nullable: false),
+                    GenreName = table.Column<int>(type: "int", nullable: false),
                     LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -42,6 +44,7 @@ namespace TrueReview2.Migrations
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     ReviewAuthor = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReviewId = table.Column<int>(type: "int", nullable: false),
                     SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
@@ -50,14 +53,13 @@ namespace TrueReview2.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    table.UniqueConstraint("AK_AspNetUsers_ApplicationUserID", x => x.ApplicationUserID);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Books",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    BookId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ISBN = table.Column<int>(type: "int", nullable: false),
@@ -65,34 +67,25 @@ namespace TrueReview2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Books", x => x.ID);
+                    table.PrimaryKey("PK_Books", x => x.BookId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Genres",
+                name: "Profiles",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    ProfileId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    GenreId = table.Column<int>(type: "int", nullable: false),
-                    GenreName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    AboutMe = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ApplicationUserId = table.Column<int>(type: "int", nullable: false),
+                    ReviewAuthor = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReviewId = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Genres", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Ratings",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    RatingNumber = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ratings", x => x.ID);
+                    table.PrimaryKey("PK_Profiles", x => x.ProfileId);
                 });
 
             migrationBuilder.CreateTable(
@@ -202,57 +195,84 @@ namespace TrueReview2.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Profiles",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AboutMe = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReviewAuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Profiles", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Profiles_AspNetUsers_ReviewAuthorId",
-                        column: x => x.ReviewAuthorId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     BookReview = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     GenreId = table.Column<int>(type: "int", nullable: false),
                     GenreName = table.Column<int>(type: "int", nullable: false),
+                    ProfileId = table.Column<int>(type: "int", nullable: true),
                     RatingId = table.Column<int>(type: "int", nullable: false),
                     RatingNumber = table.Column<int>(type: "int", nullable: false),
-                    ReviewAuthorID = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ReviewID = table.Column<int>(type: "int", nullable: true),
+                    ReviewId = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reviews", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Reviews_AspNetUsers_ReviewAuthorID",
-                        column: x => x.ReviewAuthorID,
+                        name: "FK_Reviews_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Reviews_Reviews_ReviewID",
+                        name: "FK_Reviews_Profiles_ProfileId",
+                        column: x => x.ProfileId,
+                        principalTable: "Profiles",
+                        principalColumn: "ProfileId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Genres",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    GenreId = table.Column<int>(type: "int", nullable: false),
+                    GenreName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReviewID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Genres", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Genres_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Genres_Reviews_ReviewID",
                         column: x => x.ReviewID,
                         principalTable: "Reviews",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ratings",
+                columns: table => new
+                {
+                    RatingId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    RatingNumber = table.Column<int>(type: "int", nullable: false),
+                    ReviewId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ratings", x => x.RatingId);
+                    table.ForeignKey(
+                        name: "FK_Ratings_Reviews_ReviewId",
+                        column: x => x.ReviewId,
+                        principalTable: "Reviews",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -295,21 +315,29 @@ namespace TrueReview2.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Profiles_ReviewAuthorId",
-                table: "Profiles",
-                column: "ReviewAuthorId");
+                name: "IX_Genres_ApplicationUserId",
+                table: "Genres",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_ReviewAuthorID",
-                table: "Reviews",
-                column: "ReviewAuthorID",
-                unique: true,
-                filter: "[ReviewAuthorID] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_ReviewID",
-                table: "Reviews",
+                name: "IX_Genres_ReviewID",
+                table: "Genres",
                 column: "ReviewID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ratings_ReviewId",
+                table: "Ratings",
+                column: "ReviewId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_ApplicationUserId",
+                table: "Reviews",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_ProfileId",
+                table: "Reviews",
+                column: "ProfileId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -336,19 +364,19 @@ namespace TrueReview2.Migrations
                 name: "Genres");
 
             migrationBuilder.DropTable(
-                name: "Profiles");
-
-            migrationBuilder.DropTable(
                 name: "Ratings");
-
-            migrationBuilder.DropTable(
-                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Reviews");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Profiles");
         }
     }
 }

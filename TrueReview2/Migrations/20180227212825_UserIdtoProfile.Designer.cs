@@ -12,9 +12,10 @@ using TrueReview2.Models;
 namespace TrueReview2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180227212825_UserIdtoProfile")]
+    partial class UserIdtoProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,6 +284,8 @@ namespace TrueReview2.Migrations
 
                     b.Property<string>("Title");
 
+                    b.Property<string>("UserId");
+
                     b.Property<string>("UserName");
 
                     b.HasKey("ProfileId");
@@ -330,8 +333,6 @@ namespace TrueReview2.Migrations
                     b.Property<int>("ReviewId");
 
                     b.Property<string>("Title");
-
-                    b.Property<string>("UserName");
 
                     b.HasKey("ID");
 

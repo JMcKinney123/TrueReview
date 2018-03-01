@@ -12,8 +12,8 @@ using TrueReview2.Models;
 namespace TrueReview2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180221222421_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20180228012229_addedUserName")]
+    partial class addedUserName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -139,7 +139,7 @@ namespace TrueReview2.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<int>("ApplicationUserID");
+                    b.Property<int>("ApplicationUserId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -148,6 +148,10 @@ namespace TrueReview2.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<int>("GenreId");
+
+                    b.Property<int>("GenreName");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -165,7 +169,11 @@ namespace TrueReview2.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<int?>("ProfileId");
+
                     b.Property<string>("ReviewAuthor");
+
+                    b.Property<int>("ReviewId");
 
                     b.Property<string>("SecurityStamp");
 
@@ -178,8 +186,6 @@ namespace TrueReview2.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("ApplicationUserID");
-
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -188,23 +194,55 @@ namespace TrueReview2.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("ProfileId")
+                        .IsUnique()
+                        .HasFilter("[ProfileId] IS NOT NULL");
+
                     b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("TrueReview2.Models.Book", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("BookId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Author");
 
-                    b.Property<int>("ISBN");
+                    b.Property<int>("GenreName");
+
+                    b.Property<long>("ISBN");
 
                     b.Property<string>("Title");
 
-                    b.HasKey("ID");
+                    b.HasKey("BookId");
 
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("TrueReview2.Models.Contact", b =>
+                {
+                    b.Property<int>("ContactId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address");
+
+                    b.Property<string>("City");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("OwnerID");
+
+                    b.Property<string>("State");
+
+                    b.Property<int>("Status");
+
+                    b.Property<string>("Zip");
+
+                    b.HasKey("ContactId");
+
+                    b.ToTable("Contact");
                 });
 
             modelBuilder.Entity("TrueReview2.Models.Genre", b =>
@@ -212,43 +250,61 @@ namespace TrueReview2.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<int>("GenreId");
 
                     b.Property<string>("GenreName");
 
+                    b.Property<int?>("ReviewID");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ReviewID");
 
                     b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("TrueReview2.Models.Profile", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("ProfileId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AboutMe");
 
-                    b.Property<string>("ReviewAuthorId");
+                    b.Property<int>("ApplicationUserId");
+
+                    b.Property<int?>("ContactId");
+
+                    b.Property<string>("ReviewAuthor");
+
+                    b.Property<int>("ReviewId");
 
                     b.Property<string>("Title");
 
                     b.Property<string>("UserName");
 
-                    b.HasKey("ID");
+                    b.HasKey("ProfileId");
 
-                    b.HasIndex("ReviewAuthorId");
+                    b.HasIndex("ContactId");
 
                     b.ToTable("Profiles");
                 });
 
             modelBuilder.Entity("TrueReview2.Models.Rating", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("RatingId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("RatingNumber");
 
-                    b.HasKey("ID");
+                    b.Property<int>("ReviewId");
+
+                    b.HasKey("RatingId");
+
+                    b.HasIndex("ReviewId");
 
                     b.ToTable("Ratings");
                 });
@@ -258,29 +314,31 @@ namespace TrueReview2.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<string>("BookReview");
 
                     b.Property<int>("GenreId");
 
                     b.Property<int>("GenreName");
 
+                    b.Property<int?>("ProfileId");
+
                     b.Property<int>("RatingId");
 
                     b.Property<int>("RatingNumber");
 
-                    b.Property<string>("ReviewAuthorID");
-
-                    b.Property<int?>("ReviewID");
+                    b.Property<int>("ReviewId");
 
                     b.Property<string>("Title");
 
+                    b.Property<string>("UserName");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("ReviewAuthorID")
-                        .IsUnique()
-                        .HasFilter("[ReviewAuthorID] IS NOT NULL");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("ReviewID");
+                    b.HasIndex("ProfileId");
 
                     b.ToTable("Reviews");
                 });
@@ -330,22 +388,48 @@ namespace TrueReview2.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("TrueReview2.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("TrueReview2.Models.Profile", "Profile")
+                        .WithOne("ApplicationUser")
+                        .HasForeignKey("TrueReview2.Models.ApplicationUser", "ProfileId");
+                });
+
+            modelBuilder.Entity("TrueReview2.Models.Genre", b =>
+                {
+                    b.HasOne("TrueReview2.Models.ApplicationUser")
+                        .WithMany("GenreNames")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("TrueReview2.Models.Review")
+                        .WithMany("GenreNames")
+                        .HasForeignKey("ReviewID");
+                });
+
             modelBuilder.Entity("TrueReview2.Models.Profile", b =>
                 {
-                    b.HasOne("TrueReview2.Models.ApplicationUser", "ReviewAuthor")
+                    b.HasOne("TrueReview2.Models.Contact", "Contact")
                         .WithMany()
-                        .HasForeignKey("ReviewAuthorId");
+                        .HasForeignKey("ContactId");
+                });
+
+            modelBuilder.Entity("TrueReview2.Models.Rating", b =>
+                {
+                    b.HasOne("TrueReview2.Models.Review")
+                        .WithMany("RatingNumbers")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("TrueReview2.Models.Review", b =>
                 {
-                    b.HasOne("TrueReview2.Models.ApplicationUser", "ReviewAuthor")
-                        .WithOne("BookReview")
-                        .HasForeignKey("TrueReview2.Models.Review", "ReviewAuthorID");
-
-                    b.HasOne("TrueReview2.Models.Review")
+                    b.HasOne("TrueReview2.Models.ApplicationUser")
                         .WithMany("Reviews")
-                        .HasForeignKey("ReviewID");
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("TrueReview2.Models.Profile")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProfileId");
                 });
 #pragma warning restore 612, 618
         }

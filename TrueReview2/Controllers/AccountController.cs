@@ -13,6 +13,9 @@ using Microsoft.Extensions.Options;
 using TrueReview2.Models;
 using TrueReview2.Models.AccountViewModels;
 using TrueReview2.Services;
+using static TrueReview2.Models.ApplicationUser;
+using TrueReview2.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrueReview2.Controllers
 {
@@ -20,25 +23,31 @@ namespace TrueReview2.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
+        private ApplicationDbContext context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly RoleManager<IdentityRole> RoleManager;
 
         public AccountController(
+            ApplicationDbContext dbContext,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            RoleManager = roleManager;
+            this.context = dbContext;
         }
 
         [TempData]
         public string ErrorMessage { get; set; }
+        
 
         [HttpGet]
         [AllowAnonymous]
@@ -208,8 +217,11 @@ namespace TrueReview2.Controllers
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
+            
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            RegisterViewModel model = new RegisterViewModel();
+            return View(model);
+            
         }
 
         [HttpPost]
@@ -220,10 +232,16 @@ namespace TrueReview2.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email/*, GenreName = model.GenreName */};
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    /* if (!await RoleManager.RoleExistsAsync("Admin"))
+                     { 
+                         var users = new IdentityRole("Admin");
+                         var res = await RoleManager.CreateAsync(users);
+                         if (res.Succeeded) */
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -233,6 +251,17 @@ namespace TrueReview2.Controllers
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
                     return RedirectToLocal(returnUrl);
+                    /*  }
+                  }
+                          _logger.LogInformation("User created a new account with password.");
+
+                          var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                          var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                          await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                          await _signInManager.SignInAsync(user, isPersistent: false);
+                          _logger.LogInformation("User created a new account with password.");*/
+                    
                 }
                 AddErrors(result);
             }
@@ -430,6 +459,9 @@ namespace TrueReview2.Controllers
             return View();
         }
 
+       
+
+       
 
         [HttpGet]
         public IActionResult AccessDenied()

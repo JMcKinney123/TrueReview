@@ -6,7 +6,7 @@ using TrueReview2.Models;
 
 namespace TrueReview2.ViewModels
 {
-    public class UserProfileViewModel
+    public class ProfileViewModel
     {
         public string UserName { get; set; }
         public string Title { get; set; }
