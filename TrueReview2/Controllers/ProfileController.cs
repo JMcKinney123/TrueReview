@@ -49,7 +49,7 @@ namespace TrueReview2.Controllers
             return View(userProfile);
 
         }
-
+        
         public IActionResult Create()
         {
             ProfileViewModel userProfileViewModel = new ProfileViewModel();
