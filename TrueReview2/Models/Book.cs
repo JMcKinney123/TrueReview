@@ -13,6 +13,8 @@ namespace TrueReview2.Models
         public string Author { get; set; }
         public long ISBN { get; set; }
 
+        public string Synopsis { get; set; }
+
         public double RatingNumber { get; set; }
 
         public Genre.Genres GenreName { get; set; }

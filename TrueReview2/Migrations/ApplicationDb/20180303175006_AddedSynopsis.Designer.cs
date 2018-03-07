@@ -12,9 +12,10 @@ using TrueReview2.Models;
 namespace TrueReview2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180303175006_AddedSynopsis")]
+    partial class AddedSynopsis
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,8 +282,6 @@ namespace TrueReview2.Migrations
 
                     b.Property<int?>("ContactId");
 
-                    b.Property<int>("GenreName");
-
                     b.Property<string>("ReviewAuthor");
 
                     b.Property<int>("ReviewId");
@@ -321,8 +320,6 @@ namespace TrueReview2.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
-                    b.Property<int?>("BookId1");
-
                     b.Property<string>("BookReview");
 
                     b.Property<int>("GenreId");
@@ -344,8 +341,6 @@ namespace TrueReview2.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("BookId1");
 
                     b.HasIndex("ProfileId");
 
@@ -435,10 +430,6 @@ namespace TrueReview2.Migrations
                     b.HasOne("TrueReview2.Models.ApplicationUser")
                         .WithMany("Reviews")
                         .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("TrueReview2.Models.Book", "BookId")
-                        .WithMany()
-                        .HasForeignKey("BookId1");
 
                     b.HasOne("TrueReview2.Models.Profile")
                         .WithMany("Reviews")

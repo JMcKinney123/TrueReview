@@ -7,9 +7,12 @@
     <tr>
         <th>Title</th>
         <th>Author</th>
+        <th>Synopsis</th>
         <th>ISBN</th>
         <th>Genre</th>
-
+        <th>Rating</th>
+        
+        <a asp-action="Index">Full List of Books in Database</a>
     </tr>
 
     @foreach (var book in Model)
@@ -17,11 +20,14 @@
         <tr>
             <td>@book.Title</td>
             <td>@book.Author</td>
+            <td>@book.Synopsis</td>
             <td>@book.ISBN</td>
             <td>@book.GenreName</td>
-
+            <td>@book.RatingNumber</td>
         </tr>
     }
 </table>
+
+<p><a asp-controller="Review" asp-action="Add">Write a review for this book</a></p>
 
 <p><a asp-controller="Book" asp-action="Remove">Delete Book(s)</a></p>

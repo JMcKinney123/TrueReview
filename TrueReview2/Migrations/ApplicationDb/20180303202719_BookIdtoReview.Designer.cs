@@ -12,9 +12,10 @@ using TrueReview2.Models;
 namespace TrueReview2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180303202719_BookIdtoReview")]
+    partial class BookIdtoReview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -280,8 +281,6 @@ namespace TrueReview2.Migrations
                     b.Property<int>("ApplicationUserId");
 
                     b.Property<int?>("ContactId");
-
-                    b.Property<int>("GenreName");
 
                     b.Property<string>("ReviewAuthor");
 
