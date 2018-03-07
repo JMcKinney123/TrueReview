@@ -47,7 +47,6 @@ namespace TrueReview2.Controllers
                     GenreName = addReviewViewModel.GenreName,
                     RatingNumber = addReviewViewModel.RatingNumber,
                     UserName = User.Identity.Name,
-                    BookId = addReviewViewModel.BookId
 
                 };
 

@@ -22,8 +22,7 @@ namespace TrueReview2.ViewModels
 
         public int GenreID { get; set; }
 
-        public Book BookId { get; set; }
-
+        
         [Display(Name = "Genre")]
         public Genre.Genres GenreName { get; set; }
         

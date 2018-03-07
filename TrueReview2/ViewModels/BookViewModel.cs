@@ -19,13 +19,10 @@ namespace TrueReview2.ViewModels
         [Display(Name = "Author")]
         public string Author { get; set; }
 
-
+        
         [Display(Name = "ISBN")]
         public long ISBN { get; set; }
 
-        [Display(Name = "Synopsis")]
-        [Required]
-        public string Synopsis { get; set; }
 
         [Display(Name = "Genre")]
         public Genre.Genres GenreName { get; set; }

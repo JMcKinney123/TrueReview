@@ -54,7 +54,7 @@ namespace TrueReview2.Controllers
                     Title = userProfileViewModel.Title,
                     UserName = User.Identity.Name,
                     AboutMe = userProfileViewModel.AboutMe,
-                    GenreName = userProfileViewModel.GenreName
+                    
 
                 };
 

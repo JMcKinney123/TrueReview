@@ -207,13 +207,13 @@ namespace TrueReview2.Migrations
 
                     b.Property<string>("Author");
 
+                    b.Property<int>("AuthorId");
+
                     b.Property<int>("GenreName");
 
                     b.Property<long>("ISBN");
 
                     b.Property<double>("RatingNumber");
-
-                    b.Property<string>("Synopsis");
 
                     b.Property<string>("Title");
 
@@ -281,8 +281,6 @@ namespace TrueReview2.Migrations
 
                     b.Property<int?>("ContactId");
 
-                    b.Property<int>("GenreName");
-
                     b.Property<string>("ReviewAuthor");
 
                     b.Property<int>("ReviewId");
@@ -321,8 +319,6 @@ namespace TrueReview2.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
-                    b.Property<int?>("BookId1");
-
                     b.Property<string>("BookReview");
 
                     b.Property<int>("GenreId");
@@ -344,8 +340,6 @@ namespace TrueReview2.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("BookId1");
 
                     b.HasIndex("ProfileId");
 
@@ -435,10 +429,6 @@ namespace TrueReview2.Migrations
                     b.HasOne("TrueReview2.Models.ApplicationUser")
                         .WithMany("Reviews")
                         .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("TrueReview2.Models.Book", "BookId")
-                        .WithMany()
-                        .HasForeignKey("BookId1");
 
                     b.HasOne("TrueReview2.Models.Profile")
                         .WithMany("Reviews")

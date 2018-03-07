@@ -14,7 +14,7 @@ namespace TrueReview2.Models
 
         public string UserName { get; set; }
         public string AboutMe { get; set; }
-        public Genre.Genres GenreName { get; set; }
+
 
         public string ReviewAuthor { get; set; }
         public int ApplicationUserId { get; set; }

@@ -25,7 +25,6 @@ namespace TrueReview2.Controllers
         }
         public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-           
             ViewData["TitleSortParm"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
             ViewData["AuthorSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Author" : "";
             ViewData["CurrentFilter"] = searchString;
@@ -52,7 +51,6 @@ namespace TrueReview2.Controllers
                     books = books.OrderBy(s => s.Title);
                     break;
             }
-        
             return View(await books.AsNoTracking().ToListAsync());
         }
 
@@ -83,8 +81,7 @@ namespace TrueReview2.Controllers
                     Author = bookViewModel.Author,
                     ISBN = bookViewModel.ISBN,
                     GenreName = bookViewModel.GenreName,
-                    Synopsis = bookViewModel.Synopsis,
-                    
+                    RatingNumber = bookViewModel.RatingNumber,
 
                 };
 
@@ -132,14 +129,14 @@ namespace TrueReview2.Controllers
         }
         public IActionResult Results(int? id)
         {
+          
+
             var bookPage = context.Books.Where(p => p.BookId == id);
-            //if (bookPage != null)
-           
+
 
             return View(bookPage);
-           
-        }
-       
 
+
+        }
     }
 }

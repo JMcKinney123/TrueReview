@@ -12,8 +12,6 @@ namespace TrueReview2.Models
     {
         public int ID { get; set; }
 
-        public Book BookId { get; set; }
-
         public int ReviewId { get; set; }
         
         public string BookReview { get; set; }
