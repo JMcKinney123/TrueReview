@@ -12,8 +12,8 @@ using TrueReview2.Models;
 namespace TrueReview2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180228012229_addedUserName")]
-    partial class addedUserName
+    [Migration("20180525205206_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -212,6 +212,8 @@ namespace TrueReview2.Migrations
 
                     b.Property<long>("ISBN");
 
+                    b.Property<double>("RatingNumber");
+
                     b.Property<string>("Title");
 
                     b.HasKey("BookId");
@@ -298,7 +300,7 @@ namespace TrueReview2.Migrations
                     b.Property<int>("RatingId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("RatingNumber");
+                    b.Property<double>("RatingNumber");
 
                     b.Property<int>("ReviewId");
 
@@ -326,7 +328,7 @@ namespace TrueReview2.Migrations
 
                     b.Property<int>("RatingId");
 
-                    b.Property<int>("RatingNumber");
+                    b.Property<double>("RatingNumber");
 
                     b.Property<int>("ReviewId");
 
