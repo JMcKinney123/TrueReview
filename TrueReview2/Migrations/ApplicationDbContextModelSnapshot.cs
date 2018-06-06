@@ -209,6 +209,33 @@ namespace TrueReview2.Migrations
                     b.ToTable("Books");
                 });
 
+            modelBuilder.Entity("TrueReview2.Models.Contact", b =>
+                {
+                    b.Property<int>("ContactId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address");
+
+                    b.Property<string>("City");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("OwnerID");
+
+                    b.Property<string>("State");
+
+                    b.Property<int>("Status");
+
+                    b.Property<string>("Zip");
+
+                    b.HasKey("ContactId");
+
+                    b.ToTable("Contact");
+                });
+
             modelBuilder.Entity("TrueReview2.Models.Genre", b =>
                 {
                     b.Property<int>("GenreId")
@@ -251,11 +278,21 @@ namespace TrueReview2.Migrations
 
                     b.Property<string>("AboutMe");
 
+                    b.Property<int>("ApplicationUserId");
+
+                    b.Property<string>("ApplicationUserId1");
+
+                    b.Property<int?>("ContactId");
+
                     b.Property<string>("Title");
 
                     b.Property<string>("UserName");
 
                     b.HasKey("ProfileId");
+
+                    b.HasIndex("ApplicationUserId1");
+
+                    b.HasIndex("ContactId");
 
                     b.ToTable("Profiles");
                 });
@@ -362,6 +399,17 @@ namespace TrueReview2.Migrations
                     b.HasOne("TrueReview2.Models.ApplicationUser")
                         .WithMany("GenreNames")
                         .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("TrueReview2.Models.Profile", b =>
+                {
+                    b.HasOne("TrueReview2.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId1");
+
+                    b.HasOne("TrueReview2.Models.Contact", "Contact")
+                        .WithMany()
+                        .HasForeignKey("ContactId");
                 });
 
             modelBuilder.Entity("TrueReview2.Models.Review", b =>

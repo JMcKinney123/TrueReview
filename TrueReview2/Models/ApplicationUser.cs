@@ -20,7 +20,7 @@ namespace TrueReview2.Models
 
        
         public string ReviewAuthor { get; set; }
-
+        
        
         public Genre.Genres GenreName { get; set; }
 

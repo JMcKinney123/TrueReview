@@ -17,8 +17,8 @@ namespace TrueReview2.Models
         public string Title { get; set; }
 
         public int ApplicationUserId { get; set; }
-        
-       
+        public ApplicationUser ApplicationUser { get; set; }
+        public Contact Contact { get; set; }
         public ICollection<Review> Reviews { get; set; }
 
         
