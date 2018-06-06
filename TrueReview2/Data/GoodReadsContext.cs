@@ -11,6 +11,9 @@ namespace TrueReview2.Data
 {
     public class GoodReadsContext : DbContext
     {
+
+
+
         
        public GoodReadsContext(DbContextOptions<GoodReadsContext> options)
             : base(options)

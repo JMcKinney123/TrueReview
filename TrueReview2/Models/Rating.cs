@@ -12,7 +12,6 @@ namespace TrueReview2.Models
         public double RatingNumber { get; set; }
         public int RatingId { get; set; }
 
-        public int ReviewId { get; set; }
 
         public Rating() { }
 

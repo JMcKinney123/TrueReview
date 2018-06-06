@@ -20,7 +20,7 @@ namespace TrueReview2.Data
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Book> Books { get; set; }
-
+        public DbSet<GoodRead> GoodReads { get; set; }
 
 
 
@@ -30,5 +30,10 @@ namespace TrueReview2.Data
        
             base.OnModelCreating(modelBuilder);
         }
+
+
+
+
+        public DbSet<TrueReview2.Models.GoodRead> GoodRead { get; set; }
     }
 }

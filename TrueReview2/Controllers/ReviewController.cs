@@ -72,7 +72,7 @@ namespace TrueReview2.Controllers
         {
             foreach (int reviewId in reviewIds)
             {
-                Review theReview = context.Reviews.Single(c => c.ID == reviewId);
+                Review theReview = context.Reviews.Single(c => c.ReviewId == reviewId);
                 context.Reviews.Remove(theReview);
             }
 

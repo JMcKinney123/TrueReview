@@ -17,5 +17,7 @@ namespace TrueReview2.Models
 
         public Genre.Genres GenreName { get; set; }
 
+        public ICollection<Review> Reviews { get; set; }
+
     }
 }

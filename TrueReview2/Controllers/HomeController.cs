@@ -8,6 +8,9 @@ using TrueReview2.Models;
 using Microsoft.AspNetCore.Identity;
 using TrueReview2.Data;
 using Microsoft.EntityFrameworkCore;
+using TrueReview2.Helper;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace TrueReview2.Controllers
 {
@@ -15,6 +18,8 @@ namespace TrueReview2.Controllers
     {
         private UserManager<ApplicationUser> _userManager;
         private ApplicationDbContext context;
+
+        GoodReadAPI _api = new GoodReadAPI();
 
         public HomeController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
@@ -34,6 +39,22 @@ namespace TrueReview2.Controllers
 
             return View(await books.ToListAsync());
 
+        }
+
+        public async Task<IActionResult> IndexAPI()
+        {
+            List<GoodRead> goodRead = new List<GoodRead>();
+            HttpClient client = _api.Initial();
+            HttpResponseMessage res = await client.GetAsync("api/GoodReads");
+
+
+            if (res.IsSuccessStatusCode)
+            {
+                var result = res.Content.ReadAsStringAsync().Result;
+                goodRead = JsonConvert.DeserializeObject<List<GoodRead>>(result);
+            }
+
+                return View(goodRead);
         }
 
         public IActionResult About()

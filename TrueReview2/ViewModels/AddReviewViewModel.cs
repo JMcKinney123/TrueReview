@@ -28,7 +28,7 @@ namespace TrueReview2.ViewModels
         
         [Range(1, 10, ErrorMessage = "Must be between one and ten.")]
         [Display(Name = "Book Rating")]
-        public int RatingNumber { get; set; }
+        public Rating RatingNumber { get; set; }
 
         public List<SelectListItem> GenreNames { get; set; }
 

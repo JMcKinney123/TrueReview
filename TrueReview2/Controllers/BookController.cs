@@ -127,7 +127,7 @@ namespace TrueReview2.Controllers
 
             return Redirect("/Book");
         }
-        public IActionResult Results(int? id)
+        public IActionResult Results(int id)
         {
           
 

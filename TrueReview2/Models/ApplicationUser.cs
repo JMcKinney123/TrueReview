@@ -13,17 +13,15 @@ namespace TrueReview2.Models
     public class ApplicationUser : IdentityUser
     {
         
-        public int ApplicationUserId { get; set; }
+        
         
         public string AboutMe { get; set; }
         public string Title { get; set; }
 
-        public Profile Profile { get; set; }
+       
         public string ReviewAuthor { get; set; }
 
-        public int ReviewId { get; set; }
-
-        public int GenreId { get; set; }
+       
         public Genre.Genres GenreName { get; set; }
 
         public ICollection<Genre> GenreNames { get; set; }

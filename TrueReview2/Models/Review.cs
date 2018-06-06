@@ -10,23 +10,27 @@ namespace TrueReview2.Models
 {
     public class Review
     {
-        public int ID { get; set; }
+
 
         public int ReviewId { get; set; }
-        
-        public string BookReview { get; set; }
-        public string Title { get; set; }
+          
+        public int GoodReadId { get; set; }
 
         public string UserName { get; set; }
-        public int RatingId { get; set; }
-        public double RatingNumber { get; set; }
+        public string BookReview { get; set; }
+        public string Title { get; set; }
+        
+        
+        
+        public Rating RatingNumber { get; set; }
+        public Book Book { get; set; }
 
         public int GenreId { get; set; }
         public Genre.Genres GenreName { get; set; }
 
-        public ICollection<Genre> GenreNames { get; set; }
+        
 
-        public ICollection<Rating> RatingNumbers { get; set; }
+        
 
         
 
